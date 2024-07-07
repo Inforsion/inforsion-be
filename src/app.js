@@ -25,4 +25,10 @@ app.get('/', ()=> {
     console.log('hi!')
 })
 
+// Error Handle Middleware
+app.use((err,req,res,next) => {
+    console.error('에러:', err);
+    res.status(500).send(err.message)
+})
+
 module.exports = app;

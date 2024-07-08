@@ -4,7 +4,7 @@ dotenv.config();
 const morgan = require('morgan')
 
 const indexRouter = require('./routes/indexRouter')
-const userRouter = require('./routes/userRouter')
+const userRouter = require('./routes/authRouter')
 const path = require("path");
 const errorHandler = require("./middlewares/errorMiddleware");
 
@@ -21,7 +21,7 @@ app.use('/', express.static(path.join(__dirname,'public')))
 
 // Routes
 app.use('/', indexRouter)
-app.use('/user',userRouter)
+app.use('/auth',userRouter)
 
 app.get('/', ()=> {
     console.log('hi!')

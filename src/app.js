@@ -8,8 +8,8 @@ const userRouter = require('./routes/authRouter')
 const path = require("path");
 const errorHandler = require("./middlewares/errorMiddleware");
 const setupPassport = require('./config/passport')
-// App
 
+// App
 const app = express();
 app.set('PORT', process.env.EXPRESS_PORT || 8080)
 

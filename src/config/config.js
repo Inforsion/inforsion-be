@@ -1,7 +1,9 @@
-{
+const dotenv = require('dotenv').config()
+
+module.exports = {
   "development": {
     "username": "root",
-    "password": "tjwjddn0",
+    "password": process.env.DB_PASSWORD,
     "database": "inforsion_db",
     "host": "127.0.0.1",
     "dialect": "mysql"
@@ -19,5 +21,5 @@
     "database": "database_production",
     "host": "127.0.0.1",
     "dialect": "mysql"
-  }
-}
+  },
+};

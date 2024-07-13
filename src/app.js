@@ -9,7 +9,8 @@ const path = require("path");
 const errorHandler = require("./middlewares/errorMiddleware");
 const setupPassport = require('./config/passport')
 const db = require('./models/index');
-
+const cors = require('cors')
+const corsOption = require('./config/cors.config')
 // App
 const app = express();
 app.set('PORT', process.env.EXPRESS_PORT || 8080)
@@ -26,6 +27,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false}))
 app.use('/', express.static(path.join(__dirname,'public')))
 setupPassport(app)
+app.use(cors(corsOption))
 
 // Routes
 app.use('/', indexRouter)

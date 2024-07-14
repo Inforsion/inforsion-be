@@ -10,7 +10,7 @@ module.exports = (sequelize) => {
         },
         name: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: false,
         },
         location: {
             type: DataTypes.STRING,
@@ -59,18 +59,14 @@ module.exports = (sequelize) => {
             foreignKey: 'userId',
             as: 'owner'
         });
-        // Store.hasMany(models.Product, {
-        //     foreignKey: 'storeId',
-        //     as: 'products'
-        // });
-        // Store.hasMany(models.Order, {
-        //     foreignKey: 'storeId',
-        //     as: 'orders'
-        // });
-        // Store.hasMany(models.Expense, {
-        //     foreignKey: 'storeId',
-        //     as: 'expenses'
-        // });
+        Store.hasMany(models.Product, {
+            foreignKey: 'storeId',
+            as: 'products'
+        });
+        Store.hasMany(models.Expense, {
+            foreignKey: 'storeId',
+            as: 'expenses'
+        });
     };
 
     return Store;

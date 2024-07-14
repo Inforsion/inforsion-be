@@ -5,6 +5,8 @@ const morgan = require('morgan')
 
 const indexRouter = require('./routes/indexRouter')
 const userRouter = require('./routes/authRouter')
+const storeRouter = require('./routes/storeRouter')
+
 const path = require("path");
 const errorHandler = require("./middlewares/errorMiddleware");
 const setupPassport = require('./config/passport')
@@ -32,6 +34,7 @@ app.use(cors(corsOption))
 // Routes
 app.use('/', indexRouter)
 app.use('/auth',userRouter)
+app.use('/store',storeRouter)
 
 app.get('/', ()=> {
     console.log('hi!')

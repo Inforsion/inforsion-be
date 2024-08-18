@@ -62,6 +62,21 @@ async function getStoreService(userId) {
     }
 }
 
+async function getStoreDetailService(storeId) {
+    try {
+        return Store.findOne({where: {id: storeId}})
+    } catch (error) {
+        if (error instanceof StoreServiceError) {
+            throw error;
+        } else if (error.name === 'SequelizeUniqueConstraintError') {
+            throw new StoreServiceError('A store with this name already exists', 'DUPLICATE_ERROR');
+        } else {
+            console.error("Unexpected error in createStoreService:", error);
+            throw new StoreServiceError('An unexpected error occurred while creating the store', 'INTERNAL_ERROR');
+        }
+    }
+}
+
 async function deleteStoreService(userId, storeId) {
     try {
         const store = await Store.findOne({where: {userId: userId,id:storeId }})
@@ -76,4 +91,4 @@ async function deleteStoreService(userId, storeId) {
 }
 
 
-module.exports = { createStoreService, StoreServiceError,getStoreService,deleteStoreService };
+module.exports = { createStoreService, StoreServiceError,getStoreService,getStoreDetailService,deleteStoreService };

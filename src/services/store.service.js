@@ -61,4 +61,19 @@ async function getStoreService(userId) {
         }
     }
 }
-module.exports = { createStoreService, StoreServiceError,getStoreService };
+
+async function deleteStoreService(userId, storeId) {
+    try {
+        const store = await Store.findOne({where: {userId: userId,id:storeId }})
+        return await Store.destroy({
+                where: {
+                    id: store.id
+                }
+            })
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+
+module.exports = { createStoreService, StoreServiceError,getStoreService,deleteStoreService };

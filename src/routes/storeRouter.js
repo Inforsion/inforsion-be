@@ -1,6 +1,6 @@
 // routes/authRouter.js
 const express = require('express')
-const {createStore, getStores} = require("../controllers/store.controller");
+const {createStore, getStores, deleteStore, updateStore} = require("../controllers/store.controller");
 const storeRouter = express.Router();
 const passport = require('passport')
 
@@ -9,5 +9,11 @@ storeRouter.post('/create', passport.authenticate('jwt', { session: false }),cre
 
 // GET store/list/${id}
 storeRouter.get(`/list`, passport.authenticate('jwt', { session: false}), getStores)
+
+// PUT store/:id
+storeRouter.put('/:id', passport.authenticate('jwt', { session: false}),updateStore)
+
+// DELETE store/:id
+storeRouter.delete('/',passport.authenticate('jwt', { session: false}),deleteStore)
 
 module.exports = storeRouter

@@ -5,8 +5,9 @@ const e = require("express");
 async function createStore(req, res, next) {
     try {
         const { name, location, description, phoneNumber, email, openingHours } = req.body;
+        const userId = req.user.id;
 
-        const response = await createStoreService(name, location, description, phoneNumber, email, openingHours)
+        const response = await createStoreService(name, location, description, phoneNumber, email, openingHours, userId)
         if(response) {
                         res.status(201).json({
                 message: '스토어가 정상적으로 생성되었습니다.',

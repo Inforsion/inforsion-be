@@ -8,7 +8,7 @@ class StoreServiceError extends Error {
     }
 }
 
-async function createStoreService(name, location, description, phoneNumber, email, openingHours) {
+async function createStoreService(name, location, description, phoneNumber, email, openingHours,userId) {
     try {
         const data = {
             name,
@@ -17,6 +17,7 @@ async function createStoreService(name, location, description, phoneNumber, emai
             phoneNumber,
             email,
             openingHours,
+            userId
         };
 
         console.log("=>(store.service.js:23) data", data);

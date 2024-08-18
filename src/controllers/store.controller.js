@@ -1,4 +1,4 @@
-const {createStoreService, StoreServiceError} = require("../services/store.service");
+const {createStoreService, StoreServiceError,getStoreService} = require("../services/store.service");
 const e = require("express");
 
 
@@ -25,12 +25,24 @@ async function createStore(req, res, next) {
     }
 }
 
-// 읽기
-async function getStore() {
+// 하나의 유저가 생성한 모든 가게의 정보
+async function getStores(req,res,next) {
     try {
-
+        const userId = req.user.id
+        const storeList = await getStoreService(userId)
+        if(storeList) {
+            res.status(200).json({
+                message: "가게를 목록입니다.",
+                storeList: storeList
+            })
+        } else {
+            res.status(400).json({
+                message: "가게를 목록이 없습니다.",
+                storeList: []
+            })
+        }
     } catch (e) {
-        console.error(e)
+        next(e)
     }
 }
 
@@ -44,4 +56,4 @@ async function deleteStore() {
 
 }
 
-module.exports = { createStore }
+module.exports = { createStore, getStores }

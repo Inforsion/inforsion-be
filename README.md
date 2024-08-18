@@ -1,7 +1,7 @@
 
 
-<div align="center" style="margin: 30px">
-<img style="border-radius: 100%;overflow: hidden" src="https://avatars.githubusercontent.com/u/175222118?s=200&v=4" alt="인포전-로고"/>
+<div align="center" style="margin: 30px;border-radius: 30%;">
+<img style="overflow:hidden" src="https://avatars.githubusercontent.com/u/175222118?s=200&v=4" alt="인포전-로고"/>
 </div>
 
 # Inforsion Backend Project

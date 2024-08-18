@@ -1,4 +1,5 @@
 const {createStoreService, StoreServiceError} = require("../services/store.service");
+const e = require("express");
 
 
 async function createStore(req, res, next) {
@@ -7,7 +8,7 @@ async function createStore(req, res, next) {
 
         const response = await createStoreService(name, location, description, phoneNumber, email, openingHours)
         if(response) {
-            res.status(201).json({
+                        res.status(201).json({
                 message: '스토어가 정상적으로 생성되었습니다.',
                 storeInfo: response
             })
@@ -21,6 +22,25 @@ async function createStore(req, res, next) {
         })
         next(e);
     }
+}
+
+// 읽기
+async function getStore() {
+    try {
+
+    } catch (e) {
+        console.error(e)
+    }
+}
+
+// 수정
+async function updateStore() {
+
+}
+
+// 삭제
+async function deleteStore() {
+
 }
 
 module.exports = { createStore }

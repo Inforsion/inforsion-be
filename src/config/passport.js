@@ -34,19 +34,19 @@ const localVerifyCallback = async (username, password, done) => {
 }
 passport.use('local', new LocalStrategy(localOptions, localVerifyCallback))
 
-// passport.use(new JwtStrategy(opts, async (jwt_payload, done)=> {
-//     try {
-//         const user = await User.findOne(jwt_payload.email)
-//
-//         if(user) {
-//             return done(null, user)
-//         } else {
-//             return done(null, false)
-//         }
-//     } catch (e) {
-//         return done(e, false)
-//     }
-// }))
+passport.use(new JwtStrategy(opts, async (jwt_payload, done)=> {
+    try {
+        const user = await User.findOne({where: {email:jwt_payload.email}})
+
+        if(user) {
+            return done(null, user)
+        } else {
+            return done(null, false)
+        }
+    } catch (e) {
+        return done(e, false)
+    }
+}))
 
 // Passport 설정 함수
 const setupPassport = (app) => {

@@ -20,30 +20,32 @@ async function register(req, res, next) {
     }
 }
 
-async function login(req, res, next){
-    try {
-        //인증 과정
-        passport.authenticate('local', { session: false }, (err, user, info) => {
-            if (err || !user) {
-                res.status(400).json({message: info ? info : '로그인 실패'})
-                return;
-            }
+async function login(req, res, next) {
+    passport.authenticate('local', { session: false }, (err, user, info) => {
+        if (err) {
+            return next(err);
+        }
 
-            let accessToken = jwt.sign(
+        if (!user) {
+            return res.status(401).json({
+                message: info ? info.message : '로그인 실패'
+            });
+        }
+
+        try {
+            const accessToken = jwt.sign(
                 { id: user.id, email: user.email },
                 process.env.JWT_SECRET,
-            )
+            );
 
-            if(accessToken) {
-                res.status(200).json({
-                    message: '로그인 성공!',
-                    accessToken: accessToken
-                })
-            }
-        })(req,res,next)
-    } catch (error) {
-        next(error)
-    }
+            return res.status(200).json({
+                message: '로그인 성공!',
+                accessToken: accessToken
+            });
+        } catch (error) {
+            return next(error);
+        }
+    })(req, res, next);
 }
 
 

@@ -77,6 +77,22 @@ async function getStoreDetailService(storeId) {
     }
 }
 
+async function updateStoreService(userId, storeId, updateData) {
+    try {
+        const store = await Store.findOne({where: {userId: userId,id:storeId }})
+
+        return await Store.update(
+            { ...updateData },
+            {
+            where: {
+                id: store.id
+            }
+        })
+    } catch (error) {
+        console.error(error)
+    }
+}
+
 async function deleteStoreService(userId, storeId) {
     try {
         const store = await Store.findOne({where: {userId: userId,id:storeId }})
@@ -91,4 +107,4 @@ async function deleteStoreService(userId, storeId) {
 }
 
 
-module.exports = { createStoreService, StoreServiceError,getStoreService,getStoreDetailService,deleteStoreService };
+module.exports = { createStoreService, StoreServiceError,getStoreService,getStoreDetailService,deleteStoreService,updateStoreService };

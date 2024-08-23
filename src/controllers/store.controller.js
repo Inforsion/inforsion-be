@@ -1,4 +1,6 @@
-const {createStoreService, StoreServiceError,getStoreService, deleteStoreService, getStoreDetailService} = require("../services/store.service");
+const {createStoreService, StoreServiceError,getStoreService, deleteStoreService, getStoreDetailService,
+    updateStoreService
+} = require("../services/store.service");
 const e = require("express");
 
 
@@ -70,7 +72,31 @@ async function getStoreDetail(req, res, next) {
 
 // 수정
 async function updateStore(req, res, next) {
-
+    try {
+        const userId = req.user.id;
+        const { id } = req.params;
+        const storeId = id;
+        const { name, location, description, phoneNumber, email, openingHours } = req.body;
+        const updateData = {
+            name, location, description, phoneNumber, email, openingHours
+        }
+        const store = await updateStoreService(userId, storeId, updateData)
+        console.log(store)
+        if(store) {
+            res.status(200).json({
+                message: "가게를 성공적으로 수정했습니다.",
+                storeId: store.id,
+                updateData: updateData
+            })
+        } else {
+            res.status(400).json({
+                message: "수정할 가게가 없습니다.",
+                storeId: -1
+            })
+        }
+    } catch (e) {
+        next(e)
+    }
 }
 
 // 삭제

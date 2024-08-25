@@ -57,7 +57,9 @@ module.exports = (sequelize) => {
     Store.associate = (models) => {
         Store.belongsTo(models.User, {
             foreignKey: 'userId',
-            as: 'owner'
+            targetKey: 'id',
+            onDelete: 'cascade',
+            onUpdate: 'cascade'
         });
         Store.hasMany(models.Product, {
             foreignKey: 'storeId',

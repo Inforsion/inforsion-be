@@ -53,14 +53,6 @@ module.exports = (sequelize) => {
             type: DataTypes.BOOLEAN,
             defaultValue: false
         },
-        approvedBy: {
-            type: DataTypes.INTEGER,
-            allowNull: true,
-            references: {
-                model: 'users',
-                key: 'id'
-            }
-        },
         createdAt: {
             type: DataTypes.DATE,
             allowNull: false,
@@ -85,10 +77,6 @@ module.exports = (sequelize) => {
         Expense.belongsTo(models.Store, {
             foreignKey: 'storeId',
             as: 'store'
-        });
-        Expense.belongsTo(models.User, {
-            foreignKey: 'approvedBy',
-            as: 'approver'
         });
     };
 

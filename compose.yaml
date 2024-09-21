@@ -1,24 +1,32 @@
-version: '3'
 services:
   server:
     build:
       context: .
     environment:
       - NODE_ENV=production
-      - DATABASE_URL=mysql://${PRODUCTION_DB_USERNAME}:${PRODUCTION_DB_PASSWORD}@mysql:${PRODUCTION_DB_PORT}/${PRODUCTION_DB_NAME}
+      - DATABASE_URL=mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@mysql:3306/${MYSQL_DATABASE}
     ports:
       - "8090:8090"
     env_file:
       - .env
     depends_on:
       - mysql
+    restart: unless-stopped
+
   mysql:
     image: mysql:8.3.0
     environment:
-      - PRODUCTION_DB_PASSWORD=${PRODUCTION_DB_PASSWORD}
-      - PRODUCTION_DB_NAME=${PRODUCTION_DB_NAME}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    volumes:
+      - mysql_data:/var/lib/mysql
     ports:
       - "3306:3306"
     env_file:
       - .env
+    restart: unless-stopped
 
+volumes:
+  mysql_data:

@@ -13,7 +13,7 @@ services:
       context: .
     environment:
       NODE_ENV: production
-        - DATABASE_URL=mysql://root:${MYSQL_ROOT_PASSWORD}@mysql:3306/${MYSQL_DATABASE}
+        - DATABASE_URL=mysql://${PRODUCTION_DB_USERNAME}:${PRODUCTION_DB_PASSWORD}@mysql:3306/${PRODUCTION_DB_NAME}
     ports:
       - "8090:8090"
     env_file:
@@ -23,8 +23,8 @@ services:
   mysql:
     image: mysql:8.3.0
     environment:
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - PRODUCTION_DB_PASSWORD=${PRODUCTION_DB_PASSWORD}
+      - PRODUCTION_DB_NAME=${PRODUCTION_DB_NAME}
     ports:
       - "3306:3306"
     env_file:

@@ -2,6 +2,7 @@ const express = require('express')
 const dotenv = require('dotenv')
 dotenv.config();
 const morgan = require('morgan')
+const connectWithRetry = require("./utils/dbConnection");
 
 const indexRouter = require('./routes/indexRouter')
 const userRouter = require('./routes/authRouter')
@@ -16,12 +17,16 @@ const corsOption = require('./config/cors.config')
 // App
 const app = express();
 app.set('PORT', process.env.EXPRESS_PORT || 8080)
-db.sequelize.sync({force: false})
-    .then(()=> {
-        console.log('DB 연결 성공')
-    }).catch((err)=> {
-    console.error(err)
-})
+
+
+connectWithRetry()
+    .then(() => {
+        console.log('Inforsion Server가 작동 중입니다...');
+    })
+    .catch(err => {
+        console.error('예기치 못한 오류 발생:', err);
+        process.exit(1);
+    });
 
 // Middlewares
 app.use(morgan('dev'))

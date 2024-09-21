@@ -22,8 +22,8 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'User',
-    initialAutoIncrement: true,
     timestamps: false,
   });
+
   return User;
 };

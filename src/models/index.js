@@ -14,7 +14,14 @@ sequelize = new Sequelize(
     config.database,
     config.username,
     config.password,
-    config
+    config,
+    {
+      connectionTimeout: 60000,
+      retry: {
+        max: 10,
+        timeout: 5000,
+      }
+    }
 );
 
 fs

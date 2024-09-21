@@ -1,7 +1,0 @@
-#!/bin/bash
-set -e
-
-mysql -u root -p"$MYSQL_ROOT_PASSWORD" <<-EOSQL
-    CREATE DATABASE IF NOT EXISTS "$PRODUCTION_DB_NAME";
-    USE "$PRODUCTION_DB_NAME";
-EOSQL

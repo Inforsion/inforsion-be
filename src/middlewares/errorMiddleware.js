@@ -9,6 +9,14 @@ const errorHandler = (err, req, res, next) => {
         });
     }
 
+    // 404 에러
+    if(err.code === 404) {
+        return res.status(404).json({
+            status: 'error',
+            message: '잘못된 요청 경로입니다.'
+        })
+    }
+
     res.status(500).send(err.message)
 }
 

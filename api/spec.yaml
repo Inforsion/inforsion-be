@@ -9,7 +9,7 @@ servers:
     description: 개발 서버
 
 paths:
-  /auth/register:
+  /auth/signup:
     post:
       summary: 회원가입
       tags:

@@ -1,5 +1,5 @@
 const request = require('supertest');
-const { register } = require('../src/controllers/auth.controller');
+const { register } = require('../src/controllers/auth.controller.js');
 
 const app = require('../src/app');
 

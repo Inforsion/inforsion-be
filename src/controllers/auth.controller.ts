@@ -1,6 +1,7 @@
-const userService = require('../services/auth.service');
-const passport = require('passport');
-const jwt = require('jsonwebtoken');
+import userService from '../services/auth.service';
+import { Request, Response, NextFunction } from 'express';
+import passport from 'passport';
+import jwt from 'jsonwebtoken';
 
 async function register(req, res, next) {
   try {
@@ -51,4 +52,4 @@ async function login(req, res, next) {
   })(req, res, next);
 }
 
-module.exports = { register, login };
+export { register, login };

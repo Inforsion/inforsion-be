@@ -1,0 +1,55 @@
+import bcrypt from 'bcrypt';
+import passport from 'passport';
+import jwt from 'jsonwebtoken';
+import db from '../models';
+
+interface User {
+  id: number;
+  username: string;
+  email: string;
+  password: string;
+}
+
+async function registerUser(
+  username: string,
+  email: string,
+  password: string
+): Promise<User | void> {
+  try {
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = await db.User.create({
+      username,
+      email,
+      password: hashedPassword,
+    });
+
+    return newUser;
+  } catch (e) {
+    console.error('auth.service 에러', e);
+  }
+}
+
+async function loginUser(
+  email: string,
+  password: string
+): Promise<string | null> {
+  let token: string | null = null;
+  passport.authenticate(
+    'local',
+    { session: false },
+    (err: Error, user: User, info: { message: string }) => {
+      if (err || !user) {
+        throw new Error(info ? info.message : 'Login failed');
+      }
+
+      token = jwt.sign(
+        { id: user.id, email: user.email },
+        process.env.JWT_SECRET as string
+      );
+    }
+  );
+
+  return token;
+}
+
+export default { registerUser, loginUser };

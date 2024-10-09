@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "esnext",                                  /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
+    "module": "commonjs",                                /* Specify what module code is generated. */
+    "esModuleInterop": true,                             /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */     /* Disable resolving symlinks to their realpath. This correlates to the same flag in node. */
+    "forceConsistentCasingInFileNames": true,            /* Ensure that casing is correct in imports. */
+    "allowSyntheticDefaultImports": true,
+    "strict": true,                                      /* Enable all strict type-checking options. */
+    "outDir": "./dist",                                  /* Redirect output structure to the directory. */
+    "skipLibCheck": true,
+    "experimentalDecorators": true                              /* Skip type checking all .d.ts files. */
+  },
+  "include": ["src", "bin", "__test__"],
+  "exclude": ["node_modules"],
+}

@@ -6,7 +6,6 @@ import db from '../models/index';
 import bcrypt from 'bcrypt';
 import { Application } from 'express';
 
-const { User } = db;
 dotenv.config();
 
 const opts = {
@@ -25,7 +24,8 @@ const localVerifyCallback = async (
   done: (error: any, user?: any, options?: any) => void
 ) => {
   try {
-    const user = await User.findOne({ where: { email: username } });
+    console.log(db.Store);
+    const user = await db.User.findOne({ where: { email: username } });
     if (!user) {
       return done(null, false, {
         message: '존재하지 않는 사용자입니다. 회원가입을 해주세요.',
@@ -52,7 +52,7 @@ passport.use(
       done: (error: any, user?: any, options?: any) => void
     ) => {
       try {
-        const user = await User.findOne({
+        const user = await db.User.findOne({
           where: { email: jwt_payload.email },
         });
 

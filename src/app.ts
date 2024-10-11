@@ -23,7 +23,7 @@ app.set('PORT', process.env.EXPRESS_PORT || 8080);
 
 connectWithRetry()
   .then(() => {
-    console.log('Inforsion Server가 작동 중입니다...');
+    console.log('Inforsion DB Server가 작동 중입니다...');
   })
   .catch((err: Error) => {
     console.error('예기치 못한 오류 발생:', err);

@@ -1,5 +1,5 @@
 {
-  "watch": ["src","bin"],
+  "watch": [ "src","bin" ],
   "ext": "ts",
-  "exec": "tsx bin/www.ts"
+  "exec": "npx tsx bin/www.ts"
 }

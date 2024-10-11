@@ -10,7 +10,7 @@ import storeRouter from './routes/storeRouter';
 import errorHandler from './middlewares/errorMiddleware';
 import setupPassport from './config/passport';
 import db from './models/index';
-import corsOption from './config/cors.config.js';
+import corsOption from './config/cors.config';
 import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

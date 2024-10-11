@@ -99,3 +99,80 @@
 //
 //   return Store;
 // };
+
+import sequelize, {
+  Model,
+  DataTypes,
+  InferAttributes,
+  InferCreationAttributes,
+  Sequelize,
+} from 'sequelize';
+import models from './index';
+
+class Stores extends Model<
+  InferAttributes<Stores>,
+  InferCreationAttributes<Stores>
+> {
+  declare name: string;
+  declare location: string;
+  declare description: string;
+  declare phoneNumber: string;
+  declare email: string;
+  declare openingHours: object;
+  declare isActive: boolean;
+}
+
+const initModel = (sequelize: Sequelize) => {
+  Stores.init(
+    {
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      location: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      description: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+      },
+      phoneNumber: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      email: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        validate: {
+          isEmail: true,
+        },
+      },
+      openingHours: {
+        type: DataTypes.JSON,
+        allowNull: true,
+      },
+      isActive: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true,
+      },
+    },
+    {
+      modelName: 'Stores',
+      tableName: 'stores',
+      timestamps: true,
+      sequelize,
+    }
+  );
+};
+
+const associate = (db: any) => {
+  Stores.belongsTo(db.Users, {
+    foreignKey: 'userId',
+    targetKey: 'id',
+    onDelete: 'cascade',
+    onUpdate: 'cascade',
+  });
+};
+
+export { Stores, initModel, associate };

@@ -54,14 +54,17 @@ const initializeModels = async () => {
 
   for (const file of files) {
     const model = await loadModel(file);
-    if (model.initUser) {
-      model.initUser(sequelize);
-      db[model.Users.name] = model.Users;
+    if (model.initModel) {
+      model.initModel(sequelize);
+      db[model] = model.Users;
     }
   }
 
+  console.log(db);
   Object.keys(db).forEach((modelName) => {
+    console.log(modelName);
     if (db[modelName].associate) {
+      console.log(modelName);
       db[modelName].associate(db);
     }
   });

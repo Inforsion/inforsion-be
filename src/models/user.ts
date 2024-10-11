@@ -15,7 +15,7 @@ class Users extends Model<
   declare password: string;
 }
 
-const initUser = (sequelize: Sequelize) => {
+const initModel = (sequelize: Sequelize) => {
   Users.init(
     {
       username: {
@@ -40,4 +40,4 @@ const initUser = (sequelize: Sequelize) => {
   );
 };
 
-export { Users, initUser };
+export { Users, initModel };

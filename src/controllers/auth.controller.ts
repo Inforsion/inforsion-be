@@ -2,8 +2,10 @@ import userService from '../services/auth.service';
 import { Request, Response, NextFunction } from 'express';
 import passport from 'passport';
 import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+dotenv.config();
 
-async function register(req, res, next) {
+async function register(req: Request, res: Response, next: NextFunction) {
   try {
     const { username, email, password } = req.body;
     if (!(username && email && password)) {
@@ -24,32 +26,36 @@ async function register(req, res, next) {
   }
 }
 
-async function login(req, res, next) {
-  passport.authenticate('local', { session: false }, (err, user, info) => {
-    if (err) {
-      return next(err);
-    }
+async function login(req: Request, res: Response, next: NextFunction) {
+  passport.authenticate(
+    'local',
+    { session: false },
+    (err: Error, user: any, info: any) => {
+      if (err) {
+        return next(err);
+      }
 
-    if (!user) {
-      return res.status(401).json({
-        message: info ? info.message : '로그인 실패',
-      });
-    }
+      if (!user) {
+        return res.status(401).json({
+          message: info ? info.message : '로그인 실패',
+        });
+      }
 
-    try {
-      const accessToken = jwt.sign(
-        { id: user.id, email: user.email },
-        process.env.JWT_SECRET
-      );
+      try {
+        const accessToken = jwt.sign(
+          { id: user.id, email: user.email },
+          process.env.JWT_SECRET as string
+        );
 
-      return res.status(200).json({
-        message: '로그인 성공!',
-        accessToken: accessToken,
-      });
-    } catch (error) {
-      return next(error);
+        return res.status(200).json({
+          message: '로그인 성공!',
+          accessToken: accessToken,
+        });
+      } catch (error) {
+        return next(error);
+      }
     }
-  })(req, res, next);
+  )(req, res, next);
 }
 
 export { register, login };

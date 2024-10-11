@@ -1,16 +1,12 @@
 import fs from 'fs';
 import path from 'path';
-import { Sequelize, DataTypes, Options } from 'sequelize';
-import process from 'process';
+import { DataTypes, Options, Sequelize } from 'sequelize';
 import configure from '../config/config';
-import { fileURLToPath } from 'url';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+import dotenv from 'dotenv';
+dotenv.config();
 
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'development';
-
 const config = configure[env];
 
 interface DB {
@@ -22,9 +18,9 @@ interface DB {
 const db: DB = {} as DB;
 
 const sequelize = new Sequelize(
-  config.database,
+  config.database!,
   config.username,
-  config.password,
+  config.password!,
   {
     pool: {
       max: 5,
@@ -43,11 +39,10 @@ const sequelize = new Sequelize(
 
 const loadModel = async (file: string) => {
   const modelPath = path.join(__dirname, file);
-  const model = (await import(modelPath)).default(sequelize, DataTypes);
-  return model;
+  return await import(modelPath);
 };
 
-(async () => {
+const initializeModels = async () => {
   const files = fs.readdirSync(__dirname).filter((file) => {
     return (
       file.indexOf('.') !== 0 &&
@@ -59,18 +54,22 @@ const loadModel = async (file: string) => {
 
   for (const file of files) {
     const model = await loadModel(file);
-    db[model.name] = model;
+    if (model.initUser) {
+      model.initUser(sequelize);
+      db[model.Users.name] = model.Users;
+    }
   }
 
   Object.keys(db).forEach((modelName) => {
     if (db[modelName].associate) {
       db[modelName].associate(db);
-      console.log(db[modelName]);
     }
   });
 
   db.sequelize = sequelize;
   db.Sequelize = Sequelize;
-})();
+};
+
+initializeModels();
 
 export default db;

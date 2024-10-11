@@ -1,30 +1,43 @@
-'use strict';
-import { Model } from 'sequelize';
+import sequelize, {
+  Model,
+  DataTypes,
+  InferAttributes,
+  InferCreationAttributes,
+  Sequelize,
+} from 'sequelize';
 
-export default (sequelize, DataTypes) => {
-  class User extends Model {
-    static associate(models) {
-      // define association here
-      User.hasMany(models.Store, {
-        foreignKey: 'userId',
-        sourceKey: 'id',
-        onDelete: 'cascade',
-        onUpdate: 'cascade',
-      });
-    }
-  }
-  User.init(
+class Users extends Model<
+  InferAttributes<Users>,
+  InferCreationAttributes<Users>
+> {
+  declare username: string;
+  declare email: string;
+  declare password: string;
+}
+
+const initUser = (sequelize: Sequelize) => {
+  Users.init(
     {
-      username: DataTypes.STRING,
-      email: DataTypes.STRING,
-      password: DataTypes.STRING,
+      username: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
     },
     {
-      sequelize,
+      modelName: 'Users',
       tableName: 'users',
-      timestamps: false,
+      timestamps: true,
+      sequelize,
     }
   );
-
-  return User;
 };
+
+export { Users, initUser };

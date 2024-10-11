@@ -1,4 +1,17 @@
-const errorHandler = (err, req, res, next) => {
+import { NextFunction, Request, Response } from 'express';
+
+interface Error {
+  name?: string;
+  code?: number;
+  message: string;
+}
+
+const errorHandler = (
+  err: Error,
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   console.error(err);
 
   // JWT 인증 에러

@@ -1,17 +1,22 @@
 {
   "compilerOptions": {
-    "target": "ESNext",                                  /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
-    "module": "commonjs",                                /* Specify what module code is generated. */
-    "esModuleInterop": true,                             /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */     /* Disable resolving symlinks to their realpath. This correlates to the same flag in node. */
-    "forceConsistentCasingInFileNames": true,            /* Ensure that casing is correct in imports. */
-    "allowSyntheticDefaultImports": true,
-    "strict": true,                                      /* Enable all strict type-checking options. */
-    "outDir": "./dist",                                  /* Redirect output structure to the directory. */
+    "target": "ES2018",
+    "module": "commonjs",
+    "outDir": "./dist",
+    "rootDir": ".",
+    "strict": true,
+    "esModuleInterop": true,
     "skipLibCheck": true,
-    "experimentalDecorators": true,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
     "sourceMap": true,
-    /* Skip type checking all .d.ts files. */
+    "baseUrl": ".",
   },
-  "include": ["src/**/*", "bin", "__test__"],
+  "include": ["./**/*"],
   "exclude": ["node_modules"],
+  "ts-node": {
+    "esm": false,
+    "experimentalSpecifierResolution": "node"
+  }
 }

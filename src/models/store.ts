@@ -175,4 +175,5 @@ const associate = (db: any) => {
   });
 };
 
-export { Stores, initModel, associate };
+export default Stores;
+export { initModel, associate };

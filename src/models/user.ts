@@ -40,4 +40,5 @@ const initModel = (sequelize: Sequelize) => {
   );
 };
 
-export { Users, initModel };
+export { initModel };
+export default Users;

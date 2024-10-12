@@ -56,15 +56,13 @@ const initializeModels = async () => {
     const model = await loadModel(file);
     if (model.initModel) {
       model.initModel(sequelize);
-      db[model] = model.Users;
+      db[model.default.name] = model.default;
     }
   }
 
   console.log(db);
   Object.keys(db).forEach((modelName) => {
-    console.log(modelName);
     if (db[modelName].associate) {
-      console.log(modelName);
       db[modelName].associate(db);
     }
   });

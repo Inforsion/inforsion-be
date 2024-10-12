@@ -6,15 +6,11 @@ import cors from 'cors';
 import connectWithRetry from './utils/dbConnection';
 import indexRouter from './routes/indexRouter';
 import userRouter from './routes/authRouter';
-// import storeRouter from './routes/storeRouter';
+import storeRouter from './routes/storeRouter';
 import errorHandler from './middlewares/errorMiddleware';
 import setupPassport from './config/passport';
 import db from './models/index';
 import corsOption from './config/cors.config';
-import { fileURLToPath } from 'url';
-//
-// // const __filename = fileURLToPath(import.meta.url);
-// const __dirname = path.dirname(__filename);
 
 dotenv.config();
 
@@ -42,7 +38,7 @@ app.use(cors(corsOption));
 // Routes
 app.use('/', indexRouter);
 app.use('/auth', userRouter);
-// app.use('/store', storeRouter);
+app.use('/store', storeRouter);
 
 // Error Handle Middleware
 app.use(errorHandler as express.ErrorRequestHandler);

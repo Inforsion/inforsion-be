@@ -120,6 +120,17 @@ class Store extends Model<
   declare email: string;
   declare openingHours: object;
   declare isActive: boolean;
+
+  static associate = (models: any) => {
+    console.log('가게는 유저에 속해있다.');
+    console.log(models.User);
+    Store.belongsTo(models.User, {
+      foreignKey: 'userId',
+      targetKey: 'id',
+      onDelete: 'cascade',
+      onUpdate: 'cascade',
+    });
+  };
 }
 
 const initModel = (sequelize: Sequelize) => {
@@ -166,14 +177,5 @@ const initModel = (sequelize: Sequelize) => {
   );
 };
 
-const associate = (db: any) => {
-  Store.belongsTo(db.Users, {
-    foreignKey: 'userId',
-    targetKey: 'id',
-    onDelete: 'cascade',
-    onUpdate: 'cascade',
-  });
-};
-
 export default Store;
-export { initModel, associate };
+export { initModel };

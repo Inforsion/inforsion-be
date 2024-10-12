@@ -16,6 +16,7 @@ COPY prisma ./prisma
 COPY package*.json ./
 RUN npm ci
 RUN npx prisma generate --schema=./prisma/schema.prisma
+RUN npm run prisma:migrate
 
 # TypeScript 컴파일
 RUN npm run build

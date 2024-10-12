@@ -16,7 +16,7 @@ COPY prisma ./prisma
 COPY package*.json ./
 RUN npm ci
 RUN npx prisma generate --schema=./prisma/schema.prisma
-RUN npm run prisma:migrate
+
 
 # TypeScript 컴파일
 RUN npm run build
@@ -30,4 +30,4 @@ USER node
 EXPOSE 8090
 
 # 컴파일된 JavaScript 파일 실행
-CMD ["node", "dist/bin/www.js"]
+CMD npx prisma migrate deploy && node dist/bin/www.js

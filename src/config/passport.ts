@@ -4,9 +4,8 @@ import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
 import dotenv from 'dotenv';
 import bcrypt from 'bcrypt';
 import { Application } from 'express';
-import { PrismaClient, users } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import Prisma from '@prisma/client';
+import prisma from '../../prisma/client';
 
 dotenv.config();
 
@@ -26,7 +25,7 @@ const localVerifyCallback = async (
   done: (error: any, user?: any, options?: any) => void
 ) => {
   try {
-    const user = await prisma.users.findUnique({ where: { email: username } });
+    const user = await prisma.user.findUnique({ where: { email: username } });
     if (!user) {
       return done(null, false, {
         message: '존재하지 않는 사용자입니다. 회원가입을 해주세요.',
@@ -50,10 +49,10 @@ passport.use(
     opts,
     async (
       jwt_payload: { email: string },
-      done: (error: any, user?: users | false) => void
+      done: (error: any, user?: Prisma.User | false) => void
     ) => {
       try {
-        const user = await prisma.users.findUnique({
+        const user = await prisma.user.findUnique({
           where: { email: jwt_payload.email },
         });
 

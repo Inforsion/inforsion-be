@@ -1,6 +1,5 @@
-import { Prisma, PrismaClient, stores } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { Prisma, PrismaClient } from '@prisma/client';
+import prisma from '../../prisma/client';
 
 class StoreServiceError extends Error {
   type: string;
@@ -11,12 +10,12 @@ class StoreServiceError extends Error {
     this.type = type;
   }
 }
-type StoreData = Omit<Prisma.storesCreateInput, 'users'> & { userId: number };
+type StoreData = Omit<Prisma.StoreCreateInput, 'users'> & { userId: number };
 
-async function createStoreService(data: StoreData): Promise<stores> {
+async function createStoreService(data: StoreData) {
   try {
     // 같은 사용자의 가게들 중 이름이 중복되는지 확인
-    const existingStore = await prisma.stores.findFirst({
+    const existingStore = await prisma.store.findFirst({
       where: {
         AND: [{ name: data.name }, { userId: data.userId }],
       },
@@ -36,7 +35,7 @@ async function createStoreService(data: StoreData): Promise<stores> {
       );
     }
 
-    const response = await prisma.stores.create({ data });
+    const response = await prisma.store.create({ data });
     console.log('=>(store.service.ts:24) Store created:', response.id);
     return response;
   } catch (error) {
@@ -58,9 +57,9 @@ async function createStoreService(data: StoreData): Promise<stores> {
   }
 }
 
-async function getStoreService(userId: number): Promise<stores[]> {
+async function getStoreService(userId: number) {
   try {
-    return prisma.stores.findMany({ where: { userId } });
+    return prisma.store.findMany({ where: { userId } });
   } catch (error: any) {
     console.error('Unexpected error in getStoreService:', error);
     throw new StoreServiceError(
@@ -70,9 +69,9 @@ async function getStoreService(userId: number): Promise<stores[]> {
   }
 }
 
-async function getStoreDetailService(storeId: number): Promise<stores | null> {
+async function getStoreDetailService(storeId: number) {
   try {
-    return prisma.stores.findUnique({ where: { id: storeId } });
+    return prisma.store.findUnique({ where: { id: storeId } });
   } catch (error: any) {
     console.error('Unexpected error in getStoreDetailService:', error);
     throw new StoreServiceError(
@@ -85,10 +84,10 @@ async function getStoreDetailService(storeId: number): Promise<stores | null> {
 async function updateStoreService(
   userId: number,
   storeId: number,
-  updateData: Prisma.storesUpdateInput
-): Promise<stores> {
+  updateData: Prisma.StoreUpdateInput
+) {
   try {
-    const store = await prisma.stores.findFirst({
+    const store = await prisma.store.findFirst({
       where: { userId, id: storeId },
     });
 
@@ -96,7 +95,7 @@ async function updateStoreService(
       throw new StoreServiceError('Store not found', 'NOT_FOUND');
     }
 
-    return prisma.stores.update({
+    return prisma.store.update({
       where: { id: store.id },
       data: updateData,
     });
@@ -109,12 +108,9 @@ async function updateStoreService(
   }
 }
 
-async function deleteStoreService(
-  userId: number,
-  storeId: number
-): Promise<stores> {
+async function deleteStoreService(userId: number, storeId: number) {
   try {
-    const store = await prisma.stores.findFirst({
+    const store = await prisma.store.findFirst({
       where: { userId, id: storeId },
     });
 
@@ -122,7 +118,7 @@ async function deleteStoreService(
       throw new StoreServiceError('Store not found', 'NOT_FOUND');
     }
 
-    return prisma.stores.delete({
+    return prisma.store.delete({
       where: { id: store.id },
     });
   } catch (error: any) {

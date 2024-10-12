@@ -6,12 +6,16 @@ FROM node:${NODE_VERSION}-alpine
 
 WORKDIR /usr/src/app
 
-# 패키지 파일 복사 및 의존성 설치
-COPY package*.json ./
-RUN npm ci
 
 # 소스 파일 복사
 COPY . .
+COPY prisma ./prisma
+
+
+# 패키지 파일 복사 및 의존성 설치
+COPY package*.json ./
+RUN npm ci
+RUN npx prisma generate --schema=./prisma/schema.prisma
 
 # TypeScript 컴파일
 RUN npm run build

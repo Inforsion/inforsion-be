@@ -24,7 +24,7 @@ const localVerifyCallback = async (
   done: (error: any, user?: any, options?: any) => void
 ) => {
   try {
-    console.log(db.Store);
+    console.log(db.User);
     const user = await db.User.findOne({ where: { email: username } });
     if (!user) {
       return done(null, false, {

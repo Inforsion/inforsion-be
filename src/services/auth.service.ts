@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import passport from 'passport';
 import jwt from 'jsonwebtoken';
-import db from '../models';
+import db from '../models/index';
 
 interface User {
   id: number;

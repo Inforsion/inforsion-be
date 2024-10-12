@@ -109,9 +109,9 @@ import sequelize, {
 } from 'sequelize';
 import models from './index';
 
-class Stores extends Model<
-  InferAttributes<Stores>,
-  InferCreationAttributes<Stores>
+class Store extends Model<
+  InferAttributes<Store>,
+  InferCreationAttributes<Store>
 > {
   declare name: string;
   declare location: string;
@@ -123,7 +123,7 @@ class Stores extends Model<
 }
 
 const initModel = (sequelize: Sequelize) => {
-  Stores.init(
+  Store.init(
     {
       name: {
         type: DataTypes.STRING,
@@ -158,7 +158,7 @@ const initModel = (sequelize: Sequelize) => {
       },
     },
     {
-      modelName: 'Stores',
+      modelName: 'Store',
       tableName: 'stores',
       timestamps: true,
       sequelize,
@@ -167,7 +167,7 @@ const initModel = (sequelize: Sequelize) => {
 };
 
 const associate = (db: any) => {
-  Stores.belongsTo(db.Users, {
+  Store.belongsTo(db.Users, {
     foreignKey: 'userId',
     targetKey: 'id',
     onDelete: 'cascade',
@@ -175,5 +175,5 @@ const associate = (db: any) => {
   });
 };
 
-export default Stores;
+export default Store;
 export { initModel, associate };

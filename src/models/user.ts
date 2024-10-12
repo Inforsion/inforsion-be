@@ -6,17 +6,14 @@ import sequelize, {
   Sequelize,
 } from 'sequelize';
 
-class Users extends Model<
-  InferAttributes<Users>,
-  InferCreationAttributes<Users>
-> {
+class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
   declare username: string;
   declare email: string;
   declare password: string;
 }
 
 const initModel = (sequelize: Sequelize) => {
-  Users.init(
+  User.init(
     {
       username: {
         type: DataTypes.STRING,
@@ -32,7 +29,7 @@ const initModel = (sequelize: Sequelize) => {
       },
     },
     {
-      modelName: 'Users',
+      modelName: 'User',
       tableName: 'users',
       timestamps: true,
       sequelize,
@@ -41,4 +38,4 @@ const initModel = (sequelize: Sequelize) => {
 };
 
 export { initModel };
-export default Users;
+export default User;

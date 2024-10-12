@@ -1,7 +1,9 @@
-import bcrypt from 'bcrypt';
 import passport from 'passport';
 import jwt from 'jsonwebtoken';
-import db from '../models/index';
+import { PrismaClient } from '@prisma/client';
+import bcrypt from 'bcrypt';
+
+const prisma = new PrismaClient();
 
 interface User {
   id: number;
@@ -14,18 +16,21 @@ async function registerUser(
   username: string,
   email: string,
   password: string
-): Promise<User | void> {
+): Promise<User | null> {
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = await db.User.create({
-      username,
-      email,
-      password: hashedPassword,
+    return await prisma.users.create({
+      data: {
+        username,
+        email,
+        password: hashedPassword,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
     });
-
-    return newUser;
   } catch (e) {
     console.error('auth.service 에러', e);
+    return null;
   }
 }
 

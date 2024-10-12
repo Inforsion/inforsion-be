@@ -20,15 +20,15 @@ async function createStore(req: Request, res: Response, next: NextFunction) {
 
     const userId = (req.user as User).id;
 
-    const response = await createStoreService(
+    const response = await createStoreService({
       name,
       location,
       description,
       phoneNumber,
       email,
       openingHours,
-      userId
-    );
+      userId,
+    });
     if (response) {
       res.status(201).json({
         message: '스토어가 정상적으로 생성되었습니다.',

@@ -1,4 +1,4 @@
-import db from '../models';
+// import db from '../models';
 
 const MAX_RETRY = 5;
 const RETRY_INTERVAL = 3000;

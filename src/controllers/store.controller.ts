@@ -49,7 +49,6 @@ async function createStore(req: Request, res: Response, next: NextFunction) {
 async function getStores(req: Request, res: Response, next: NextFunction) {
   try {
     const userId = (req.user as User).id;
-    console.log(userId);
     const storeList = await getStoreService(userId);
     if (storeList) {
       res.status(200).json({

@@ -122,8 +122,6 @@ class Store extends Model<
   declare isActive: boolean;
 
   static associate = (models: any) => {
-    console.log('가게는 유저에 속해있다.');
-    console.log(models.User);
     Store.belongsTo(models.User, {
       foreignKey: 'userId',
       targetKey: 'id',

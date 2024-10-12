@@ -10,7 +10,7 @@ WORKDIR /usr/src/app
 # 소스 파일 복사
 COPY . .
 COPY prisma ./prisma
-
+RUN chown -R node:node .
 
 # 패키지 파일 복사 및 의존성 설치
 COPY package*.json ./

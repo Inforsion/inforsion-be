@@ -1,0 +1,35 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Store {
+  id           Int      @id @default(autoincrement())
+  name         String   @db.VarChar(255)
+  location     String   @db.VarChar(255)
+  description  String?  @db.Text
+  phoneNumber  String?  @db.VarChar(255)
+  email        String?  @db.VarChar(255)
+  openingHours Json?
+  isActive     Boolean? @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @default(now())
+  userId       Int      @db.Int
+  users        User     @relation(fields: [userId], references: [id], onDelete: Cascade, map: "stores_ibfk_1")
+
+  @@index([userId], map: "userId")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  username  String   @db.VarChar(255)
+  email     String   @unique @db.VarChar(255)
+  password  String   @db.VarChar(255)
+  createdAt DateTime @db.DateTime(0)
+  updatedAt DateTime @db.DateTime(0)
+  stores    Store[]
+}

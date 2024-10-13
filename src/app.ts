@@ -10,6 +10,7 @@ import productRouter from './routes/productRouter';
 import errorHandler from './middlewares/errorMiddleware';
 import setupPassport from './config/passport';
 import corsOption from './config/cors.config';
+import ingredientRouter from './routes/ingredientRouter';
 
 dotenv.config();
 
@@ -30,6 +31,7 @@ app.use('/', indexRouter);
 app.use('/auth', userRouter);
 app.use('/store', storeRouter);
 app.use('/product', productRouter);
+app.use('/ingredient', ingredientRouter);
 
 // Error Handle Middleware
 app.use(errorHandler as express.ErrorRequestHandler);

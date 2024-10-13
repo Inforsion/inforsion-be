@@ -41,7 +41,7 @@ model Product {
   name        String
   description String?
   price       Decimal  @db.Decimal(10, 2)
-  category    String
+  category    String?
   imageUrl    String?
   isSignature Boolean  @default(false)
   inStock     Boolean  @default(true)

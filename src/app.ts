@@ -6,6 +6,7 @@ import cors from 'cors';
 import indexRouter from './routes/indexRouter';
 import userRouter from './routes/authRouter';
 import storeRouter from './routes/storeRouter';
+import productRouter from './routes/productRouter';
 import errorHandler from './middlewares/errorMiddleware';
 import setupPassport from './config/passport';
 import corsOption from './config/cors.config';
@@ -28,6 +29,7 @@ app.use(cors(corsOption));
 app.use('/', indexRouter);
 app.use('/auth', userRouter);
 app.use('/store', storeRouter);
+app.use('/product', productRouter);
 
 // Error Handle Middleware
 app.use(errorHandler as express.ErrorRequestHandler);

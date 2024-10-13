@@ -8,6 +8,7 @@ services:
     depends_on:
       - server
     restart: unless-stopped
+
   server:
     build:
       context: .
@@ -19,8 +20,10 @@ services:
     env_file:
       - .env
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
     restart: unless-stopped
+    command: ["/bin/bash", "./wait-for-it.sh", "mysql:3306", "--", "./migrate-and-start.sh"]
 
   mysql:
     image: mysql:8.3.0
@@ -36,6 +39,12 @@ services:
     env_file:
       - .env
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      interval: 5s
+      retries: 10
+
 
 volumes:
   mysql_data:

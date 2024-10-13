@@ -8,7 +8,10 @@
     "dev": "nodemon ",
     "build": "tsc",
     "prisma:generate": "prisma generate",
-    "prisma:migrate": "prisma migrate dev --name init"
+    "prisma:migrate": "prisma migrate dev --name init",
+    "start": "node dist/bin/www",
+    "start:migrate:prod": "prisma migrate deploy && npm start "
+
   },
   "author": "",
   "license": "ISC",

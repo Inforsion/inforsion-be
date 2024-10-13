@@ -7,6 +7,16 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id        Int      @id @default(autoincrement())
+  username  String   @db.VarChar(255)
+  email     String   @unique @db.VarChar(255)
+  password  String   @db.VarChar(255)
+  createdAt DateTime @db.DateTime(0)
+  updatedAt DateTime @db.DateTime(0)
+  stores    Store[]
+}
+
 model Store {
   id           Int      @id @default(autoincrement())
   name         String   @db.VarChar(255)
@@ -20,16 +30,37 @@ model Store {
   updatedAt    DateTime @default(now())
   userId       Int      @db.Int
   users        User     @relation(fields: [userId], references: [id], onDelete: Cascade, map: "stores_ibfk_1")
+  products  Product[]
 
   @@index([userId], map: "userId")
 }
 
-model User {
+
+model Product {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  price       Decimal  @db.Decimal(10, 2)
+  category    String?
+  imageUrl    String?
+  isSignature Boolean  @default(false)
+  inStock     Boolean  @default(true)
+  storeId     Int
+  store       Store    @relation(fields: [storeId], references: [id])
+  ingredients Ingredient[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([storeId])
+}
+
+model Ingredient {
   id        Int      @id @default(autoincrement())
-  username  String   @db.VarChar(255)
-  email     String   @unique @db.VarChar(255)
-  password  String   @db.VarChar(255)
-  createdAt DateTime @db.DateTime(0)
-  updatedAt DateTime @db.DateTime(0)
-  stores    Store[]
+  name      String
+  amount    Decimal  @db.Decimal(10, 2)
+  unit      String
+  productId Int
+  product   Product  @relation(fields: [productId], references: [id])
+
+  @@index([productId])
 }

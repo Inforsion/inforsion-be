@@ -239,9 +239,146 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /product/create:
+    post:
+      summary: 새로운 상품 생성
+      tags:
+        - 상품
+      security:
+        - bearerAuth: [ ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductInput'
+      responses:
+        '201':
+          description: 상품 생성 성공
+        '400':
+          description: 잘못된 요청
+        '403':
+          description: 권한 없음
+
+  /product/{id}:
+    put:
+      summary: 기존 상품 수정
+      tags:
+        - 상품
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductInput'
+      responses:
+        '200':
+          description: 상품 수정 성공
+        '400':
+          description: 잘못된 요청
+        '403':
+          description: 권한 없음
+        '404':
+          description: 상품을 찾을 수 없음
+
+    delete:
+      summary: 상품 삭제
+      tags:
+        - 상품
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 상품 삭제 성공
+        '400':
+          description: 잘못된 요청
+        '403':
+          description: 권한 없음
+        '404':
+          description: 상품을 찾을 수 없음
+
+    get:
+      summary: 단일 상품 조회
+      tags:
+        - 상품
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 상품 조회 성공
+        '400':
+          description: 잘못된 요청
+        '403':
+          description: 권한 없음
+        '404':
+          description: 상품을 찾을 수 없음
+
+  /product/store/{storeId}:
+    get:
+      summary: 매장별 상품 목록 조회
+      tags:
+        - 상품
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - in: path
+          name: storeId
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 상품 목록 조회 성공
+        '400':
+          description: 잘못된 요청
+        '403':
+          description: 권한 없음
 
 components:
   schemas:
+    ProductInput:
+      type: object
+      required:
+        - name
+        - price
+        - storeId
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+        category:
+          type: string
+        imageUrl:
+          type: string
+        isSignature:
+          type: boolean
+        inStock:
+          type: boolean
+        storeId:
+          type: integer
     StoreInput:
       type: object
       required:

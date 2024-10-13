@@ -39,7 +39,7 @@ productRouter.get(
 );
 
 productRouter.get(
-  '/:storeId',
+  '/store/:storeId',
   passport.authenticate('jwt', { session: false }),
   getAllProductsByStore as RequestHandler
 );

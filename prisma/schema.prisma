@@ -31,6 +31,7 @@ model Store {
   userId       Int      @db.Int
   users        User     @relation(fields: [userId], references: [id], onDelete: Cascade, map: "stores_ibfk_1")
   products  Product[]
+  inventory Inventory[]
 
   @@index([userId], map: "userId")
 }
@@ -56,11 +57,27 @@ model Product {
 
 model Ingredient {
   id        Int      @id @default(autoincrement())
-  name      String
-  amount    Decimal  @db.Decimal(10, 2)
+  name      String    @unique
+  amountPerProduct    Decimal  @db.Decimal(10, 2)
   unit      String
   productId Int
   product   Product  @relation(fields: [productId], references: [id])
+  Inventory Inventory[]
 
   @@index([productId])
+}
+
+model Inventory {
+  id           Int        @id @default(autoincrement())
+  ingredientId Int
+  ingredient   Ingredient @relation(fields: [ingredientId], references: [id])
+  quantity     Decimal    @db.Decimal(10, 2)
+  unit         String
+  expiryDate   DateTime
+  updatedAt  DateTime   @updatedAt
+  storeId      Int
+  store        Store      @relation(fields: [storeId], references: [id])
+
+  @@index([ingredientId])
+  @@index([storeId])
 }

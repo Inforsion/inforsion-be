@@ -15,7 +15,9 @@ export const postProduct = async (req: Request, res: Response) => {
     const userId = (req.user as User).id;
 
     if (!(await isStoreOwner(userId, body.storeId))) {
-      return res.status(403).json({ message: '권한이 없습니다.' });
+      return res
+        .status(403)
+        .json({ message: '해당 가게에 대한 권한이 없습니다.' });
     }
 
     const product = await createProduct(body as Product);
@@ -48,7 +50,9 @@ export const putProduct = async (req: Request, res: Response) => {
     }
 
     if (!(await isStoreOwner(userId, existingProduct.storeId))) {
-      return res.status(403).json({ message: '권한이 없습니다.' });
+      return res
+        .status(403)
+        .json({ message: '해당 가게에 대한 권한이 없습니다.' });
     }
 
     const updatedProduct = await updateProduct(Number(id), body as Product);
@@ -76,7 +80,9 @@ export const deleteProductById = async (req: Request, res: Response) => {
     }
 
     if (!(await isStoreOwner(userId, existingProduct.storeId))) {
-      return res.status(403).json({ message: '권한이 없습니다.' });
+      return res
+        .status(403)
+        .json({ message: '해당 가게에 대한 권한이 없습니다.' });
     }
 
     await deleteProduct(Number(id));
@@ -101,7 +107,9 @@ export const getProduct = async (req: Request, res: Response) => {
     }
 
     if (!(await isStoreOwner(userId, product.storeId))) {
-      return res.status(403).json({ message: '권한이 없습니다.' });
+      return res
+        .status(403)
+        .json({ message: '해당 가게에 대한 권한이 없습니다.' });
     }
 
     res.status(200).json({ productInfo: product });
@@ -120,7 +128,9 @@ export const getAllProductsByStore = async (req: Request, res: Response) => {
     const userId = (req.user as User).id;
 
     if (!(await isStoreOwner(userId, Number(storeId)))) {
-      return res.status(403).json({ message: '권한이 없습니다.' });
+      return res
+        .status(403)
+        .json({ message: '해당 가게에 대한 권한이 없습니다.' });
     }
 
     const products = await getAllProducts(Number(storeId));

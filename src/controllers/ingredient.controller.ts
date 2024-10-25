@@ -50,7 +50,7 @@ const updateIngredient = async (req: Request, res: Response) => {
     const { name, amount, unit, productId } = req.body;
     const updatedIngredient = await service.updateIngredient(Number(id), {
       name,
-      amount,
+      amountPerProduct: amount,
       unit,
     });
     res.json(updatedIngredient);

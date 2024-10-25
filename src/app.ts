@@ -19,7 +19,7 @@ const app: Express = express();
 app.set('PORT', process.env.EXPRESS_PORT || 8080);
 
 // Middlewares
-app.use(morgan('dev'));
+app.use(morgan(':date[iso] :remote-addr :method :url :status'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use('/', express.static(path.join(__dirname, 'public')));

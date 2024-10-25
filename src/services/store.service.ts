@@ -130,7 +130,20 @@ async function deleteStoreService(userId: number, storeId: number) {
   }
 }
 
+const isStoreOwner = async (userId: number, storeId: number) => {
+  try {
+    const store = await prisma.store.findUnique({
+      where: { id: storeId },
+    });
+
+    return store?.userId === userId;
+  } catch (err) {
+    throw err;
+  }
+};
+
 export {
+  isStoreOwner,
   createStoreService,
   StoreServiceError,
   getStoreService,

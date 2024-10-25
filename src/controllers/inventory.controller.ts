@@ -1,5 +1,6 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, User } from '@prisma/client';
 import { Request, Response } from 'express';
+import { isStoreOwner } from '../services/store.service';
 const prisma = new PrismaClient();
 
 // 전체 재고 조회
@@ -36,6 +37,17 @@ const getInventoryById = async (req: Request, res: Response) => {
 const createInventory = async (req: Request, res: Response) => {
   try {
     const { ingredientId, quantity, expiryDate, storeId } = req.body;
+
+    if (!storeId || !ingredientId || !quantity || !expiryDate) {
+      res.status(400).json({ error: '요청 형식이 올바르지 않습니다.' });
+    }
+    if (
+      req.user &&
+      !(await isStoreOwner((req.user as User).id, Number(storeId)))
+    ) {
+      res.status(403).json({ message: '해당 가게에 대한 권한이 없습니다.' });
+    }
+
     const newInventory = await prisma.inventory.create({
       data: {
         ingredientId: Number(ingredientId),

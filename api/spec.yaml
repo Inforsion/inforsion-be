@@ -377,7 +377,7 @@ paths:
               properties:
                 name:
                   type: string
-                amount:
+                amountPerProduct:
                   type: number
                 unit:
                   type: string
@@ -458,8 +458,252 @@ paths:
           description: 잘못된 요청
         '404':
           description: 재료를 찾을 수 없음
+  /inventory:
+    get:
+      summary: 전체 재고 조회
+      description: 모든 재고 항목을 조회합니다.
+      tags:
+        - 재고
+      responses:
+        '200':
+          description: 성공적으로 재고 목록을 조회함
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Inventory'
+        '500':
+          description: 서버 오류
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /inventory/{id}:
+    get:
+      summary: 특정 재고 조회
+      description: ID를 기준으로 특정 재고 항목을 조회합니다.
+      tags:
+        - 재고
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: 재고 항목 ID
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 성공적으로 재고 항목을 조회함
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Inventory'
+        '404':
+          description: 재고 항목을 찾을 수 없음
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      summary: 재고 수정
+      description: 기존 재고 항목을 수정합니다.
+      tags:
+        - 재고
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: 재고 항목 ID
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                quantity:
+                  type: number
+                expiryDate:
+                  type: string
+                  format: date-time
+      responses:
+        '200':
+          description: 재고 항목이 성공적으로 수정됨
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Inventory'
+        '400':
+          description: 잘못된 요청
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    delete:
+      summary: 재고 삭제
+      description: 재고 항목을 삭제합니다.
+      tags:
+        - 재고
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: 재고 항목 ID
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 재고 항목이 성공적으로 삭제됨
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '400':
+          description: 잘못된 요청
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /inventory/create:
+    post:
+      summary: 재고 추가
+      description: 새로운 재고 항목을 추가합니다.
+      tags:
+        - 재고
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - ingredientId
+                - quantity
+                - expiryDate
+                - storeId
+              properties:
+                ingredientId:
+                  type: integer
+                quantity:
+                  type: number
+                expiryDate:
+                  type: string
+                  format: date-time
+                storeId:
+                  type: integer
+      responses:
+        '201':
+          description: 재고 항목이 성공적으로 생성됨
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Inventory'
+        '400':
+          description: 잘못된 요청
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: 권한 없음
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
+  /inventory/expiring-soon:
+    get:
+      summary: 유통기한 임박 재고 조회
+      description: 7일 이내에 유통기한이 만료되는 재고 항목을 조회합니다.
+      tags:
+        - 재고
+      responses:
+        '200':
+          description: 유통기한 임박 재고 목록을 성공적으로 조회함
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Inventory'
+        '500':
+          description: 서버 오류
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /inventory/out-of-stock:
+    get:
+      summary: 재고 부족 항목 조회
+      description: 수량이 0 이하인 재고 항목을 조회합니다.
+      tags:
+        - 재고
+      responses:
+        '200':
+          description: 재고 부족 항목 목록을 성공적으로 조회함
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Inventory'
+        '500':
+          description: 서버 오류
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 components:
   schemas:
+    Inventory:
+      type: object
+      required:
+        - ingredientId
+        - quantity
+        - expiryDate
+        - storeId
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: 재고 항목의 고유 ID
+        ingredientId:
+          type: integer
+          description: 재료의 고유 ID
+        quantity:
+          type: number
+          description: 재고 수량
+        expiryDate:
+          type: string
+          format: date-time
+          description: 유통기한
+        storeId:
+          type: integer
+          description: 가게 ID
+        ingredient:
+          $ref: '#/components/schemas/Ingredient'
+
+    Ingredient:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        unit:
+          type: string
     ProductInput:
       type: object
       required:

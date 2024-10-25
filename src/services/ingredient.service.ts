@@ -24,7 +24,7 @@ const createIngredient = async (
   return prisma.ingredient.create({
     data: {
       name,
-      amount: Number(amount),
+      amountPerProduct: Number(amount),
       unit,
       productId: Number(productId),
     },
@@ -35,12 +35,12 @@ const updateIngredient = async (
   id: number,
   updateData: IngredientUpdateInput
 ) => {
-  const { name, amount, unit } = updateData;
+  const { name, amountPerProduct, unit } = updateData;
   return prisma.ingredient.update({
     where: { id: Number(id) },
     data: {
       name,
-      amount: Number(amount),
+      amountPerProduct: Number(amountPerProduct),
       unit,
     },
   });

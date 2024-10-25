@@ -72,7 +72,6 @@ model Inventory {
   ingredientId Int
   ingredient   Ingredient @relation(fields: [ingredientId], references: [id])
   quantity     Decimal    @db.Decimal(10, 2)
-  unit         String
   expiryDate   DateTime
   updatedAt  DateTime   @updatedAt
   storeId      Int

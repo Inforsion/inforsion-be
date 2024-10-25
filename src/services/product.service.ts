@@ -88,15 +88,3 @@ export const getAllProducts = async (storeId: number) => {
     throw err;
   }
 };
-
-export const isStoreOwner = async (userId: number, storeId: number) => {
-  try {
-    const store = await prisma.store.findUnique({
-      where: { id: storeId },
-    });
-
-    return store?.userId === userId;
-  } catch (err) {
-    throw err;
-  }
-};

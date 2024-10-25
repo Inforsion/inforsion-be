@@ -47,7 +47,7 @@ const addIngredient = async (req: Request, res: Response) => {
 const updateIngredient = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const { name, amount, unit, productId } = req.body;
+    const { name, amount, unit } = req.body;
     const updatedIngredient = await service.updateIngredient(Number(id), {
       name,
       amountPerProduct: amount,

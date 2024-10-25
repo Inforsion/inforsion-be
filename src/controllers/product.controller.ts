@@ -6,8 +6,8 @@ import {
   deleteProduct,
   getProductById,
   getAllProducts,
-  isStoreOwner,
 } from '../services/product.service';
+import { isStoreOwner } from '../services/store.service';
 
 export const postProduct = async (req: Request, res: Response) => {
   try {

@@ -45,8 +45,7 @@ storeRouter.put(
 storeRouter.delete(
   '/:id',
   passport.authenticate('jwt', { session: false }),
-  (req: Request, res: Response, next: NextFunction) =>
-    deleteStore(req, res, next)
+  deleteStore
 );
 
 export default storeRouter;

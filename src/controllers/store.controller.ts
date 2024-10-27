@@ -127,13 +127,15 @@ async function updateStore(req: Request, res: Response, next: NextFunction) {
 async function deleteStore(req: Request, res: Response, next: NextFunction) {
   try {
     const userId = (req.user as User).id;
-    const storeId = req.body.storeId;
-    const store = await deleteStoreService(userId, storeId);
-    console.log(store);
+    const { storeId } = req.params;
+    const store = await deleteStoreService(userId, Number(storeId));
+
+    console.log('store', store);
+
     if (store) {
       res.status(200).json({
         message: '가게를 성공적으로 삭제했습니다.',
-        storeId: store.id,
+        storeId: storeId,
       });
     } else {
       res.status(400).json({

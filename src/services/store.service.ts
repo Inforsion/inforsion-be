@@ -1,5 +1,8 @@
 import { Prisma, PrismaClient } from '@prisma/client';
 import prisma from '../../prisma/client';
+import User$storesArgs = Prisma.User$storesArgs;
+import StoreSelect = Prisma.StoreSelect;
+import { Store } from '../types/Store';
 
 class StoreServiceError extends Error {
   type: string;
@@ -86,48 +89,40 @@ async function updateStoreService(
   storeId: number,
   updateData: Prisma.StoreUpdateInput
 ) {
-  try {
-    const store = await prisma.store.findFirst({
-      where: { userId, id: storeId },
-    });
+  const store = await prisma.store.findFirst({
+    where: { userId, id: storeId },
+  });
 
-    if (!store) {
-      throw new StoreServiceError('Store not found', 'NOT_FOUND');
-    }
-
-    return prisma.store.update({
-      where: { id: store.id },
-      data: updateData,
-    });
-  } catch (error: any) {
-    console.error(error);
+  if (!store) {
     throw new StoreServiceError(
-      'An unexpected error occurred while updating the store',
-      'INTERNAL_ERROR'
+      '스토어를 찾을 수 없습니다. 해당 가게에 대한 권한이 없거나 가게가 없는지 확인해주세요.',
+      'NOT_FOUND'
     );
   }
+
+  return prisma.store.update({
+    where: { id: store.id },
+    data: updateData,
+  });
 }
 
 async function deleteStoreService(userId: number, storeId: number) {
-  try {
-    const store = await prisma.store.findFirst({
-      where: { userId, id: storeId },
-    });
+  const store = await prisma.store.findFirst({
+    where: { userId, id: storeId },
+  });
 
-    if (!store) {
-      throw new StoreServiceError('Store not found', 'NOT_FOUND');
-    }
+  console.log('store', store);
 
-    return prisma.store.delete({
-      where: { id: store.id },
-    });
-  } catch (error: any) {
-    console.error(error);
+  if (!store) {
     throw new StoreServiceError(
-      'An unexpected error occurred while deleting the store',
-      'INTERNAL_ERROR'
+      '스토어를 찾을 수 없습니다. 해당 가게에 대한 권한이 없거나 가게가 없는지 확인해주세요.',
+      'NOT_FOUND'
     );
   }
+
+  return prisma.store.delete({
+    where: { id: storeId },
+  });
 }
 
 const isStoreOwner = async (userId: number, storeId: number) => {
@@ -135,8 +130,10 @@ const isStoreOwner = async (userId: number, storeId: number) => {
     const store = await prisma.store.findUnique({
       where: { id: storeId },
     });
+    console.log('store', store);
 
-    return store?.userId === userId;
+    if (!store) return false;
+    else return store.userId === userId;
   } catch (err) {
     throw err;
   }

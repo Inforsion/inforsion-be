@@ -195,8 +195,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-
-  /store:
     delete:
       summary: 스토어 삭제
       description: 특정 매장을 삭제합니다
@@ -204,18 +202,13 @@ paths:
         - 매장
       security:
         - bearerAuth: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - storeId
-              properties:
-                storeId:
-                  type: integer
-                  description: 삭제할 매장의 ID
+      parameters:
+        - in: path
+          name: storeId
+          required: true
+          schema:
+            type: integer
+          description: 삭제할 매장의 ID
       responses:
         '200':
           description: 매장 삭제 성공

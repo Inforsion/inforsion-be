@@ -1,4 +1,4 @@
 #!/bin/bash
 
-npx prisma db push
+npx prisma migrate dev
 node dist/bin/www.js
